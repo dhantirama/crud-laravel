@@ -1,12 +1,18 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KalkulatorController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LatihanController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsersController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [LoginController::class, 'index']);
+Route::post('actionLogin', [LoginController::class, 'actionLogin'])->name('actionLogin');
+
+//grouping routine
+Route::middleware(['auth'])->group(function () {
+    Route::resource('dashboard', DashboardController::class); //supaya dapat otomatis crud
 });
 
 Route::get('latihan', [LatihanController::class, 'index']);

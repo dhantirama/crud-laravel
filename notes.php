@@ -16,5 +16,6 @@ put : mengirim data dari form (update)
 delete : mengirim data dari form (delete)
 
 seeder: membuat data dummy di laravel
+middleware pada laravel, digunakan saat setelah login sebelum masuk ke dashboard
 
 -->

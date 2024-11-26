@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class UsersController extends Controller
 {
@@ -15,7 +17,8 @@ class UsersController extends Controller
     {
         //select * from users
         $users = User::get();
-        return view('kalkulator.user', compact('users')); //compact untuk melempar data
+        $title = "Data User";
+        return view('user.index', compact('users', 'title')); //compact untuk melempar data
     }
 
     /**
@@ -24,7 +27,7 @@ class UsersController extends Controller
     public function create()
     {
         $title = 'Tambah User';
-        return view('kalkulator.tambah-user', compact('title'));
+        return view('user.create', compact('title'));
     }
 
     /**
@@ -38,6 +41,7 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        Alert::success('Selamat!', 'Data Berhasil Ditambah');
         return redirect()->to('user');
     }
 
@@ -59,7 +63,8 @@ class UsersController extends Controller
         // $user = User::findorFail($id);  jika gagal menemukan data akan muncul not found
         // $user = User::where($id)->first; memunculkan data dari yg awal
         $user = User::find($id);
-        return view('kalkulator.edit-user', compact('title', 'user'));
+
+        return view('user.edit', compact('title', 'user'));
     }
 
     /**
@@ -79,6 +84,7 @@ class UsersController extends Controller
                 'email' => $request->email,
             ]);
         }
+        Alert::success('Selamat!', 'Data Berhasil Diubah');
         return redirect()->to('user');
 
         // //cara 2
@@ -102,8 +108,22 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function delete($id)
+    {
+        $user = User::find($id)->delete();
+        // meminta ke halaman sebelumnya
+        return redirect()->to('user');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
-        //
+        //destroy a/ function bawaan dari resource
+        $user = User::find($id)->delete();
+        // meminta ke halaman sebelumnya
+        Alert::success('Peringatan!', 'Data Berhasil Dihapus');
+        return redirect()->to('user');
     }
 }
