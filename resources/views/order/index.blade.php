@@ -15,6 +15,7 @@
                         <th>No Transaksi</th>
                         <th>Tgl Mulai</th>
                         <th>Tgl Selesai</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

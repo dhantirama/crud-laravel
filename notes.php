@@ -18,5 +18,7 @@ delete : mengirim data dari form (delete)
 seeder: membuat data dummy di laravel
 middleware pada laravel, digunakan saat setelah login sebelum masuk ke dashboard
 
--->
+//untuk menambah kolom lewat php artisan
+php artisan make:migration add_total_price_to_orders --table=orders
 
+-->

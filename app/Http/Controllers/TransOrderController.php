@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\Customer;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -45,14 +46,19 @@ class TransOrderController extends Controller
      */
     public function store(Request $request)
     {
-        Order::create($request->all()); //cara pertama
-        // Service::create([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        // ]);
-        Alert::success('Selamat!', 'Data Berhasil Ditambah');
-        return redirect()->to('order');
+        $order = Order::create($request->all());
+        foreach ($request->id_paket as $key => $val) {
+            OrderDetail::create([
+                'id_order' => $order->id,
+                'id_service' => $request->id_paket[$key],
+                'price_service' => $request->price_service[$key],
+                'qty'      => $request->qty[$key],
+                'subtotal' => $request->subtotal[$key]
+
+            ]);
+        }
+        Alert::success('Selamat!', 'Order Berhasil Ditambah');
+        return redirect()->to('trans_order');
     }
 
     /**
@@ -112,5 +118,12 @@ class TransOrderController extends Controller
         // meminta ke halaman sebelumnya
         Alert::success('Peringatan!', 'Data Berhasil Dihapus');
         return redirect()->to('order');
+    }
+    public function getPaket($id_paket)
+    {
+        $paket = Service::where('id', $id_paket)->first();
+        //cara kedua
+        // $paket = Service::find($id_paket);
+        return response()->json($paket);
     }
 }
